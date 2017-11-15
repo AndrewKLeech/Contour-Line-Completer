@@ -11,28 +11,24 @@ public class Voronoi extends JFrame{
     private static int height = 500;
     private static int width = 500;
     static BufferedImage img;
-    //set number of test points
     static int numberOfPoints = 50;
+    final int[] randX = new Random().ints(0, width).distinct().limit(numberOfPoints).toArray();
+    final int[] randY = new Random().ints(0, height).distinct().limit(numberOfPoints).toArray();
+    //set number of test points
+
     private Voronoi (){
         super("Contour Connector");
         setBounds(0, 0, width, height);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Random rand = new Random();
         for(int i = 0; i<numberOfPoints; i++){
-            VPoint vPoint = new VPoint(rand.nextInt(width),rand.nextInt(height));
+            VPoint vPoint = new VPoint(randX[i],randY[i]);
             vPoints.add(vPoint);
             System.out.println("Point " + i + "\nX: " + vPoints.get(i).getX() + "\nY: " + vPoints.get(i).getY());
         }
 
         //sort points by Y coordinate
-        Collections.sort(vPoints);
 
-
-        VLine sweepLn = new VLine(0,0,0,0);
-        for(int i = 0; i<height; i++){
-            sweepLn.setEndCoord(sweepLn.getStart().getX(),i);
-
-        }
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
         g.setPaint ( new Color ( 255, 255, 255 ) );
@@ -41,6 +37,26 @@ public class Voronoi extends JFrame{
 
         for (int i = 0; i < numberOfPoints; i++) {
             g.fill(new Ellipse2D .Double(Math.abs(vPoints.get(i).getX() - 2.5), Math.abs(vPoints.get(i).getY() - 2.5), 5, 5));
+        }
+
+        Collections.sort(vPoints);
+        int nextPoint = 0;
+
+        VLine sweepLn = new VLine(0,height,width,height);
+        for(int i = 0; i<height; i++){
+            sweepLn.setStartCoord(0,i);
+            sweepLn.setEndCoord(width,i);
+            System.out.println(i);
+            System.out.println("Before hit nextpoint: " + nextPoint);
+            if(i == vPoints.get(nextPoint).getY()){
+                System.out.println("hit: " + i);
+                System.out.println("After hit nextpoint: " + nextPoint);
+                g.drawLine(sweepLn.getStart().getX(), i, sweepLn.getEnd().getX(), i);
+                if(nextPoint<numberOfPoints-1){
+                    nextPoint++;
+                }
+
+            }
         }
     }
 
