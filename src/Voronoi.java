@@ -24,6 +24,15 @@ public class Voronoi extends JFrame{
             System.out.println("Point " + i + "\nX: " + vPoints.get(i).getX() + "\nY: " + vPoints.get(i).getY());
         }
 
+        //sort points by Y coordinate
+        Collections.sort(vPoints);
+
+
+        VLine sweepLn = new VLine(0,0,0,0);
+        for(int i = 0; i<height; i++){
+            sweepLn.setEndCoord(sweepLn.getStart().getX(),i);
+
+        }
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
         g.setPaint ( new Color ( 255, 255, 255 ) );

@@ -1,4 +1,4 @@
-public class VPoint {
+public class VPoint implements Comparable<VPoint>{
     private int x;
     private int y;
     public VPoint(int x, int y){
@@ -10,5 +10,11 @@ public class VPoint {
     }
     public int getY(){
         return y;
+    }
+    public int compareTo(VPoint point) {
+
+        int compareY = ((VPoint) point).getY();
+
+        return this.y - compareY;
     }
 }
