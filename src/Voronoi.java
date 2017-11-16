@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 public class Voronoi extends JFrame{
     private List<VPoint> vPoints = new ArrayList<>();
+    private List<VPoint> aboveSweep = new ArrayList<>();
     private static int height = 500;
     private static int width = 500;
     static BufferedImage img;
@@ -46,16 +47,23 @@ public class Voronoi extends JFrame{
         for(int i = 0; i<height; i++){
             sweepLn.setStartCoord(0,i);
             sweepLn.setEndCoord(width,i);
-            System.out.println(i);
-            System.out.println("Before hit nextpoint: " + nextPoint);
             if(i == vPoints.get(nextPoint).getY()){
-                System.out.println("hit: " + i);
-                System.out.println("After hit nextpoint: " + nextPoint);
                 g.drawLine(sweepLn.getStart().getX(), i, sweepLn.getEnd().getX(), i);
                 if(nextPoint<numberOfPoints-1){
+                    vPoints.get(nextPoint).initParabola();
+                    for(int j = 0; j<aboveSweep.size(); j++){
+                        if(aboveSweep.get(j) != vPoints.get(nextPoint)){
+                            if(aboveSweep.get(j).getX() < vPoints.get(nextPoint).getX()){
+                                vPoints.get(nextPoint).setLeftVPoint(aboveSweep.get(j));
+                            }
+                            if(aboveSweep.get(j).getX() > vPoints.get(nextPoint).getX()){
+                                vPoints.get(nextPoint).setLeftVPoint(aboveSweep.get(j));
+                            }
+                        }
+                    }
+                    aboveSweep.add(vPoints.get(nextPoint));
                     nextPoint++;
                 }
-
             }
         }
     }
