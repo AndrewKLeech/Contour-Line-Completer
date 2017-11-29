@@ -1,5 +1,6 @@
-/*Based off http://blog.ivank.net/voronoi-diagram-in-as3.html
-  implementation in the action script*/
+/* based on http://blog.ivank.net/fortunes-algorithm-and-implementation.html
+*  explanation of fortunes algorithm and addapted from implimntation in c++ and action script
+* */
 public class VEvent implements Comparable<VEvent>{
     public VPoint point;
     public boolean placeEvent;
